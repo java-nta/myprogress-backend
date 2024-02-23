@@ -34,7 +34,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     this.jwtTokenProvider = jwtTokenProvider;
     this.userDetailsService = userDetailsServiceImpl;
   }
-  
+
   @SuppressWarnings("null")
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -46,7 +46,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
       }
 
       String token = jwtTokenProvider.extractTokenFromRequest(request);
-      log.info("FILTER START IN PATH {} FOR TOKEN {}",request.getRequestURI(),token);
+      log.info("FILTER START IN PATH {} FOR TOKEN {}", request.getRequestURI(), token);
       if (token != null && jwtTokenProvider.validateToken(token)) {
         String username = jwtTokenProvider.extractPayload(token);
         UserDetailsImpl user = (UserDetailsImpl) userDetailsService.loadUserByUsername(username);
@@ -64,8 +64,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
   public boolean isPermitUrl(HttpServletRequest request) {
     String url = request.getRequestURI();
-    for(String elt: permitUrl){
-      if(url.startsWith(elt))
+    for (String elt : permitUrl) {
+      if (url.startsWith(elt))
         return true;
     }
     return false;

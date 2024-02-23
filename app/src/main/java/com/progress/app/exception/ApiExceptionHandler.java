@@ -2,6 +2,8 @@ package com.progress.app.exception;
 
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import jakarta.persistence.EntityNotFoundException;
+
 import javax.security.sasl.AuthenticationException;
 
 import org.springframework.http.HttpStatus;
@@ -17,7 +19,7 @@ public class ApiExceptionHandler {
 
 
   @ExceptionHandler({ EmailAlreadyUsedException.class, AuthenticationException.class, 
-      HttpRequestMethodNotSupportedException.class })
+      HttpRequestMethodNotSupportedException.class, EntityNotFoundException.class })
   public ResponseEntity<ExceptionPayload> handleException(Exception e) {
     String message = e.getMessage();
     ExceptionPayload exceptionPayload = new ExceptionPayload(message, BAD_REQUEST, null);
