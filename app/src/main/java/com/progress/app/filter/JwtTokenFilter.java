@@ -28,7 +28,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
   private JwtTokenProvider jwtTokenProvider;
   private UserDetailsServiceImpl userDetailsService;
-  private final List<String> permitUrl = Arrays.asList("/auth/login", "/ws/chat");
+  private final List<String> permitUrl = Arrays.asList("/auth/login", "/auth/signup", "/post/imgs/", "/ws/chat");
 
   public JwtTokenFilter(JwtTokenProvider jwtTokenProvider, UserDetailsServiceImpl userDetailsServiceImpl) {
     this.jwtTokenProvider = jwtTokenProvider;
@@ -46,7 +46,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
       }
 
       String token = jwtTokenProvider.extractTokenFromRequest(request);
-      log.info("FILTER START IN PATH {} FOR TOKEN {}", request.getRequestURI(), token);
+      log.info("FILTER START ENDPOINT: {} FOR TOKEN: {}", request.getRequestURI(), token);
       if (token != null && jwtTokenProvider.validateToken(token)) {
         String username = jwtTokenProvider.extractPayload(token);
         UserDetailsImpl user = (UserDetailsImpl) userDetailsService.loadUserByUsername(username);
@@ -54,6 +54,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, null,
             user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
+        log.info("USERNAME: {} HAS AUTHENTICATED ACTIONS=>", username);
         filterChain.doFilter(request, response);
       }
     } catch (InvalidTokenException e) {

@@ -1,60 +1,52 @@
 package com.progress.app.model;
 
 import java.util.Date;
-import java.util.List;
 
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Table(name = "users")
-@Data
+@Table(name = "post_comments")
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class User {
+public class Comment {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+
   private Long id;
 
-  @Column(name = "username")
-  private String username;
+  @Column(name = "comment")
+  private String comment;
 
-  @Column(name = "email")
-  private String email;
+  @Column(name = "commented_by")
+  private String by;
 
-  @Column(name = "password")
-  private String password;
+  @ManyToOne
+  @JoinColumn(name = "post_id", referencedColumnName = "id")
+  private Post post;
 
-  @Column(name = "role")
-  private String role;
-
-  @Column(name = "active")
-  private Boolean active;
-
-  @Getter
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<Post> posts;
+  @ManyToOne
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
+  private User user;
 
   @Column(name = "created_at")
   private Date createdAt;
 
-
   @Column(name = "updated_at")
   private Date updatedAt;
-
 
 }

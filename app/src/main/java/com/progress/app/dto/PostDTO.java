@@ -1,21 +1,26 @@
 package com.progress.app.dto;
 
 
+import com.progress.app.model.PostImage;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List;
 
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+@AllArgsConstructor
+@Builder
+public class PostDTO {
+
   private Long id;
-  private String username;
-  private String email;
-  private String role;
-  private Boolean active;
+  private String author;
+  private String text;
+  private Long likeNbr;
   private String createdAt;
   private String updatedAt;
+  private List<PostImage> images;
+
 }
